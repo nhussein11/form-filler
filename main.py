@@ -32,10 +32,12 @@ def fill_form():
     send_button = driver.find_element(By.CLASS_NAME, "uArJ5e")
     send_button.click()
 
-
-URL = "https://forms.gle/oaRezXHLG73qTHjM9"
+#Enter your URL here
+URL = "(here)"
 
 options = Options()
+
+#Uncomment this line if you want to run the script without opening a new window
 # options.add_argument('--headless')
 
 driver = webdriver.Firefox(service=Service(
