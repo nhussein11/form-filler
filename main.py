@@ -1,6 +1,3 @@
-
-from inspect import _void
-from tabnanny import check
 from selenium import webdriver
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
@@ -14,46 +11,71 @@ import time
 
 
 def random_html_elements_selection(html_elements: list) -> int:
-    # print((len(html_elements)-1))
     return randint(0, len(html_elements)-1)
 
 
-def fill_form():
+def random_trend(tendecy: int) -> int:
+    return randint(1, tendecy)
+
+
+def fill_form(iteration_number: int):
     sections = driver.find_elements(By.CLASS_NAME, "Qr7Oae")
 
     fill_radio_buttons_arbitrarily(sections[0])
     fill_radio_buttons_arbitrarily(sections[1])
 
-    fill_check_boxs_positive(sections[2])    # 95 % DE ESTAS
-    # fill_section_3_negative(sections[2])   # 5 % DE ESTAS
+    if iteration_number <= 94:
+        fill_check_boxs_positive(sections[2])       # 95 % DE ESTAS
+    else:
+        fill_check_boxs_negative(sections[2])       # 5 % DE ESTAS
 
-    fill_radio_buttons_positive(sections[3]) # 80% POSITIVAS
-    # fill_section_negative(sections[3])     # 20% NEGATYIVAS
+    if iteration_number <= 79:
+        fill_radio_buttons_positive(sections[3])    # 80% POSITIVAS
+    else:
+        fill_radio_buttons_negative(sections[3])    # 20% NEGATYIVAS
 
-    fill_radio_buttons_positive(sections[4]) #  90% POSITIVAS
-    # fill_section_negative(sections[4])     #  10% NEGATIVAS
+    if iteration_number <= 89:
+        fill_radio_buttons_positive(sections[4])  # 90% POSITIVAS
+        # TODO: TENDENCIOSA PARA LAS 5 PRIMERAS
+        if iteration_number <= 95:
+            fill_multiples_check_boxs_arbitrarily_with_trend(sections[6], 2, 4)
+        else:
+            fill_multiples_check_boxs_arbitrarily(sections[6], 2)
 
-    fill_check_boxs_arbitrarily(sections[5]) 
+        fill_multiples_check_boxs_arbitrarily(sections[7], 4)
 
-    fill_multiples_check_boxs_arbitrarily(sections[6], 2)  #TODO: TENDENCIOSA PARA LAS 5 PRIMERAS
+        fill_multiples_check_boxs_arbitrarily(sections[8], 3)
 
-    fill_multiples_check_boxs_arbitrarily(sections[7], 4) 
+        fill_radio_buttons_arbitrarily(sections[9])
 
-    fill_multiples_check_boxs_arbitrarily(sections[8], 3)
+        fill_multiples_check_boxs_arbitrarily(sections[10], 2)
 
-    fill_radio_buttons_arbitrarily(sections[9])
+        # TODO: TENDENCIOSA PARA LAS 2 ULTIMAS
+        if iteration_number <= 95:
+            fill_radio_buttons_arbitrarily_with_trend(sections[11], 2)
+        else:
+            fill_radio_buttons_arbitrarily(sections[11])
 
-    fill_multiples_check_boxs_arbitrarily(sections[10], 2)
+    else:
+        fill_radio_buttons_negative(sections[4])  # 10% NEGATIVAS
+        fill_check_boxs_arbitrarily(sections[5])
 
-    fill_radio_buttons_arbitrarily(sections[11])            #TODO: TENDENCIOSA PARA LAS 2 ULTIMAS
-
-    # send_button = driver.find_element(By.CLASS_NAME, "uArJ5e")
-    # send_button.click()
+    send_button = driver.find_element(By.CLASS_NAME, "Y5sE8d")
+    send_button.click()
+    print(send_button.is_selected())
 
 
 def fill_radio_buttons_arbitrarily(html_elements: list):
     radio_buttons = html_elements.find_elements(By.CLASS_NAME, "Od2TWd")
     random_selection = random_html_elements_selection(radio_buttons)
+    driver.execute_script(
+        "arguments[0].click();", radio_buttons[random_selection])
+    time.sleep(0.25)
+
+
+def fill_radio_buttons_arbitrarily_with_trend(html_elements: list, tendency: int):
+    radio_buttons = html_elements.find_elements(By.CLASS_NAME, "Od2TWd")
+    random_selection = random_trend(tendency)
     driver.execute_script(
         "arguments[0].click();", radio_buttons[random_selection])
     time.sleep(0.25)
@@ -82,10 +104,18 @@ def fill_check_boxs_arbitrarily(html_elements: list):
 
 def fill_multiples_check_boxs_arbitrarily(html_elements: list, iterations: int):
     check_boxs = html_elements.find_elements(By.CLASS_NAME, "uVccjd")
-    print(len(check_boxs))
     random_iterations = randint(1, iterations)
     for i in range(random_iterations):
         random_selection = random_html_elements_selection(check_boxs)
+        check_boxs[random_selection].click()
+        time.sleep(0.25)
+
+
+def fill_multiples_check_boxs_arbitrarily_with_trend(html_elements: list, iterations: int, tendency: int):
+    check_boxs = html_elements.find_elements(By.CLASS_NAME, "uVccjd")
+    random_iterations = randint(1, iterations)
+    for i in range(random_iterations):
+        random_selection = random_trend(tendency)
         check_boxs[random_selection].click()
         time.sleep(0.25)
 
@@ -110,7 +140,7 @@ options = Options()
 driver = webdriver.Firefox(service=Service(
     GeckoDriverManager().install()), options=options)
 
-for i in range(10):
+for i in range(1):
     driver.get(URL)
-    fill_form()
+    fill_form(i)
     time.sleep(0.25)
