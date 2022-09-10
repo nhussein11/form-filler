@@ -1,0 +1,16 @@
+3 no habiitar la selccion de la ultima opcion (pero habilitarlo para 5 si)
+
+4 tendenciosa para un 80% el MEDIOS ELECTRONICOS
+
+5 si me dice que no, respon de la preg 6 y termina la encuesta (esto va a pasar solo con 5 encuestas) 
+ si me dice que si, slato directro a la 7 y sigo la encuesta (90% QUE SI TENDENCIOSA)
+
+ 7 en esta puede elegir hasta 2 opciones, las primeras 5 mas tendenciosas, las primeras 5 mas tendenciosas, las primeras 5 mas tendenciosas, las primeras 5 mas tendenciosas, las primeras 5 mas tendenciosas, las primeras 5 mas tendenciosas, las primeras 5 mas tendenciosas, las primeras 5 mas tendenciosas 
+
+ 8 opcion multiple (hasta las 4)
+
+ 9 opcion multiple (hasta 3)
+
+ 11 opcion multiple hasta 2!
+
+ 12  tendenciosa para opciones 3-4-5
