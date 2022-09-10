@@ -1,13 +1,12 @@
+import time
+from random import randint
 from selenium import webdriver
-from selenium.webdriver.support.ui import WebDriverWait
-from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver.common.by import By
 from selenium.webdriver.firefox.options import Options
 from selenium.webdriver.firefox.service import Service
+from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver.support.ui import WebDriverWait
 from webdriver_manager.firefox import GeckoDriverManager
-from selenium.webdriver.common.by import By
-from random import randint
-
-import time
 
 
 def random_html_elements_selection(html_elements: list) -> int:
@@ -62,7 +61,6 @@ def fill_form(iteration_number: int):
 
     send_button = driver.find_element(By.CLASS_NAME, "Y5sE8d")
     send_button.click()
-    print(send_button.is_selected())
 
 
 def fill_radio_buttons_arbitrarily(html_elements: list):
@@ -134,13 +132,13 @@ def fill_check_boxs_negative(html_elements: list):
     check_box[-1].click()
 
 
-URL = "https://forms.gle/y4UJXBEHdojHos2eA"
+URL = ""
 
 options = Options()
 driver = webdriver.Firefox(service=Service(
     GeckoDriverManager().install()), options=options)
 
-for i in range(1):
+for i in range(10):
     driver.get(URL)
-    fill_form(i)
     time.sleep(0.25)
+    fill_form(i)
