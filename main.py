@@ -13,8 +13,8 @@ def random_html_elements_selection(html_elements: list) -> int:
     return randint(0, len(html_elements)-1)
 
 
-def random_trend(tendecy: int) -> int:
-    return randint(1, tendecy)
+def random_trend(tendecy: int, initial_value: int = 0) -> int:
+    return randint(initial_value, tendecy)
 
 
 def fill_form(iteration_number: int):
@@ -23,21 +23,22 @@ def fill_form(iteration_number: int):
     fill_radio_buttons_arbitrarily(sections[0])
     fill_radio_buttons_arbitrarily(sections[1])
 
-    if iteration_number <= 94:
-        fill_check_boxs_positive(sections[2])       # 95 % DE ESTAS
+    if iteration_number <= iterations_number*0.94:
+        # 95 % DE ESTAS #TODO: Aca deberia haber mas rtas para homebanking que para cajeros automaticos
+        fill_check_boxs_positive(sections[2])
     else:
         fill_check_boxs_negative(sections[2])       # 5 % DE ESTAS
 
-    if iteration_number <= 79:
+    if iteration_number <= iterations_number*0.79:
         fill_radio_buttons_positive(sections[3])    # 80% POSITIVAS
     else:
         fill_radio_buttons_negative(sections[3])    # 20% NEGATYIVAS
 
-    if iteration_number <= 89:
+    if iteration_number <= iterations_number*0.89:
         fill_radio_buttons_positive(sections[4])  # 90% POSITIVAS
         # TODO: TENDENCIOSA PARA LAS 5 PRIMERAS
-        if iteration_number <= 95:
-            fill_multiples_check_boxs_arbitrarily_with_trend(sections[6], 2, 4)
+        if iteration_number <= iterations_number*0.95:
+            fill_multiples_check_boxs_arbitrarily_with_trend(sections[6], 2, 9)
         else:
             fill_multiples_check_boxs_arbitrarily(sections[6], 2)
 
@@ -50,7 +51,7 @@ def fill_form(iteration_number: int):
         fill_multiples_check_boxs_arbitrarily(sections[10], 2)
 
         # TODO: TENDENCIOSA PARA LAS 2 ULTIMAS
-        if iteration_number <= 95:
+        if iteration_number <= iterations_number*0.95:
             fill_radio_buttons_arbitrarily_with_trend(sections[11], 2)
         else:
             fill_radio_buttons_arbitrarily(sections[11])
@@ -113,7 +114,7 @@ def fill_multiples_check_boxs_arbitrarily_with_trend(html_elements: list, iterat
     check_boxs = html_elements.find_elements(By.CLASS_NAME, "uVccjd")
     random_iterations = randint(1, iterations)
     for i in range(random_iterations):
-        random_selection = random_trend(tendency)
+        random_selection = random_trend(tendency, initial_value=5)
         check_boxs[random_selection].click()
         time.sleep(0.25)
 
@@ -125,6 +126,8 @@ def fill_check_boxs_positive(html_elements: list):
         random_selection = random_html_elements_selection(check_boxs[:-1])
         if not check_boxs[random_selection].is_selected():
             check_boxs[random_selection].click()
+        else: pass
+    # check_boxs[2].click()
 
 
 def fill_check_boxs_negative(html_elements: list):
@@ -133,12 +136,13 @@ def fill_check_boxs_negative(html_elements: list):
 
 
 URL = ""
+iterations_number = 15
 
 options = Options()
 driver = webdriver.Firefox(service=Service(
     GeckoDriverManager().install()), options=options)
 
-for i in range(10):
+for i in range(iterations_number):
     driver.get(URL)
-    time.sleep(0.25)
+    # time.sleep(0.25)
     fill_form(i)
